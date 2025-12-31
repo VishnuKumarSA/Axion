@@ -32,5 +32,48 @@ class EnterprisesController extends Controller
         return response()->json($enterprise, 200);
 
     }
-    
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'ent_id' => 'required|exists:enterprises,id',
+            'name' => 'required',
+            'email' => 'nullable|email',
+            'phone' => 'required|max:13',
+            'code' => 'required|unique:enterprises,code,' . $request->ent_id
+        ]);
+
+        $enterprise = Enterprise::findOrFail($request->ent_id);
+
+        $enterprise->name = $request->name;
+        $enterprise->email = $request->email;
+        $enterprise->phone = $request->phone;
+        $enterprise->code = $request->code;
+        $enterprise->save();
+
+        return response()->json([
+            'msg' => 'Enterprise updated successfully'
+        ], 200);
+
+    }
+
+    public function updateEnterpriseStatus(Request $request)
+    {
+
+        $request->validate([
+            "ent_id" => 'required',
+            "status" => 'required'
+        ]);
+
+        $enterprise = Enterprise::findOrFail($request->ent_id);
+
+        $enterprise->status = $request->status;
+        $enterprise->save();
+
+        return response()->json([
+            'msg' => 'Enterprise status updated successfully'
+        ], 200);
+
+    }
+
 }
