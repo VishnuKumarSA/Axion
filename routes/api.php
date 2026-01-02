@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\EnterpiseSettingController;
 use App\Http\Controllers\EnterprisesController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
+
+    Route::post('/create-permissions', [PermissionController::class, 'createPermission']);
+    Route::post('/roles/assign-permissions', [RolePermissionController::class, 'assignPermission']);
+
 });
